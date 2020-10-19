@@ -1,0 +1,49 @@
+.container {
+    width: 100%;
+    margin: auto;
+}
+
+#titleBar {
+    text-align: center;
+    background-color: rgb(51, 51, 51);
+    color: white;
+    padding: 15px;
+    font-size: 29px;
+}
+
+#searchSection {
+    background-color: rgb(216, 216, 216);
+    padding-bottom: 20%;
+}
+
+#searchBar {
+    margin-top: 10px;
+    padding-right:65px;
+    padding-bottom:7px;
+    border-radius: 5px;
+}
+
+#previousSearchResults {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+#searchCity {
+    padding-top: 10px;
+    font-size: 2rem;
+    text-align: center;
+}
+
+#fiveDayForecast {
+    margin-top: 20px;
+}
+
+#fiveDayForecast h1 {
+    font-size: 30px;
+}
+
+.card {
+    padding-top: 7.75rem;
+    padding-bottom: 7.75rem;
+}
+
