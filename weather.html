@@ -24,7 +24,7 @@
 
                 <h1 id="searchCity">Search for a city:</h1>
                 <input type="text" id="searchBar" />
-                <button type="button" class="btn btn-success">Search</button>
+                <button type="button" class="btn btn-success" id="searchButton">Search</button>
 
                 <div class="row">
                     <div class="col" id="previousSearchResults">
@@ -57,8 +57,8 @@
                 <div class="col-sm-12">
                     <div class="card">
                         <div class="card-body">
-                            <h5 class="card-title">Special title treatment</h5>
-                            <p class="card-text">With supporting text below as a natural lead-in to additional content.
+                            <h5 class="card-title" id="cityName">City:</h5>
+                            <p id="temperature">Temperature:</p>
                             </p>
                         </div>
                     </div>
@@ -68,28 +68,54 @@
             <div class="container">
                 <div class="row" id="fiveDayForecast">
                     <h1>5-Day Forecast:</h1>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus commodo ullamcorper pretium. Sed sed
-                    fringilla erat. Morbi lobortis congue orci sed lacinia. Sed vestibulum urna sed sodales varius. Lorem
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus commodo ullamcorper pretium. Sed
+                    sed
+                    fringilla erat. Morbi lobortis congue orci sed lacinia. Sed vestibulum urna sed sodales varius.
+                    Lorem
                     ipsum dolor sit amet, consectetur adipiscing elit. Aliquam rutrum elementum leo, eget ultrices diam
-                    hendrerit ut. Interdum et malesuada fames ac ante ipsum primis in faucibus. Pellentesque vehicula ornare
-                    ipsum elementum tempor. In sit amet arcu ac augue vehicula consequat. Sed placerat lectus id hendrerit
+                    hendrerit ut. Interdum et malesuada fames ac ante ipsum primis in faucibus. Pellentesque vehicula
+                    ornare
+                    ipsum elementum tempor. In sit amet arcu ac augue vehicula consequat. Sed placerat lectus id
+                    hendrerit
                     congue.
 
-                    Proin sit amet enim elit. Nam commodo, sem in pretium faucibus, justo felis porta ante, quis vehicula
-                    sapien purus in magna. Sed blandit porttitor leo, eget consectetur nisi lobortis vel. Fusce ultricies
-                    magna ac lorem bibendum, nec tempus arcu dapibus. In sit amet maximus risus, eleifend interdum felis. Ut
+                    Proin sit amet enim elit. Nam commodo, sem in pretium faucibus, justo felis porta ante, quis
+                    vehicula
+                    sapien purus in magna. Sed blandit porttitor leo, eget consectetur nisi lobortis vel. Fusce
+                    ultricies
+                    magna ac lorem bibendum, nec tempus arcu dapibus. In sit amet maximus risus, eleifend interdum
+                    felis. Ut
                     ut consequat enim. Donec laoreet commodo consequat.
 
-                    Duis porttitor justo eget bibendum elementum. Praesent mattis cursus facilisis. Nullam eleifend est quis
-                    eros porttitor, at tempor ipsum elementum. Praesent rhoncus enim eget suscipit posuere. Cras tincidunt
-                    enim vitae ligula eleifend venenatis. Sed euismod lobortis elit at vehicula. Etiam nec justo a ligula
+                    Duis porttitor justo eget bibendum elementum. Praesent mattis cursus facilisis. Nullam eleifend est
+                    quis
+                    eros porttitor, at tempor ipsum elementum. Praesent rhoncus enim eget suscipit posuere. Cras
+                    tincidunt
+                    enim vitae ligula eleifend venenatis. Sed euismod lobortis elit at vehicula. Etiam nec justo a
+                    ligula
                     luctus ullamcorper vel vitae lorem. Morbi ac nisi vel nisi ullamcorper venenatis at nec massa.
                 </div>
             </div>
         </div>
 
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-    <script ></script>
+        <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+        <script>
+            // var city = input.val();
+            var queryURL = "https://api.openweathermap.org/data/2.5/weather?q=London&appid=2521198802838b4440f00e66a7aa70a5";
+
+            $("#searchButton").on("click", function () {
+                $.ajax({
+                    url: queryURL,
+                    method: "GET"
+                }).then(function (response) {
+                    console.log(response);
+
+                });
+
+            });
+
+
+        </script>
 
 </body>
 
