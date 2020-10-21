@@ -57,9 +57,11 @@
                 <div class="col-sm-12">
                     <div class="card">
                         <div class="card-body">
-                            <h5 class="card-title" id="cityName">City:</h5>
-                            <p id="temperature">Temperature:</p>
-                            </p>
+                            <h2 class="card-title" id="cityName">City:</h2>
+                            <p class="weather-card" id="temperature">Temperature:</p>
+                            <p class="weather-card" id="humidity">Humidity:</p>
+                            <p class="weather-card" id="windSpeed">Wind Speed:</p>
+                            <p class="weather-card" id="UVIndex">UV Index:</p>
                         </div>
                     </div>
                 </div>
@@ -67,7 +69,7 @@
 
             <div class="container">
                 <div class="row" id="fiveDayForecast">
-                    <h1>5-Day Forecast:</h1>
+                    <h2>5-Day Forecast:</h2>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus commodo ullamcorper pretium. Sed
                     sed
                     fringilla erat. Morbi lobortis congue orci sed lacinia. Sed vestibulum urna sed sodales varius.
@@ -98,23 +100,50 @@
             </div>
         </div>
 
-        <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-        <script>
-            // var city = input.val();
-            var queryURL = "https://api.openweathermap.org/data/2.5/weather?q=London&appid=2521198802838b4440f00e66a7aa70a5";
+        <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>.
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
 
-            $("#searchButton").on("click", function () {
+        <script>      
+            $("#searchButton").on("click", function (event){
+                event.preventDefault;
+                var city = $(this).siblings("input").val();
+                var queryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=2521198802838b4440f00e66a7aa70a5";
+
                 $.ajax({
                     url: queryURL,
                     method: "GET"
                 }).then(function (response) {
                     console.log(response);
 
+                    //Temperature is returned in Kelvin, so here it is converted to Fahrenheit and rounded to the second decimal place.
+                    var tempKelvin = response.main.temp;
+                    var tempFahrenheit = ((tempKelvin - 273.15) * 9 / 5 + 32).toFixed(2);
+                    var date = moment().format("l");
+                    
+
+                    $("#cityName").text("City: " + response.name + " " + date);
+                    $("#temperature").text("Temperature: " + tempFahrenheit + "°F")
+                    $("#humidity").text("Humidity: " + response.main.humidity + "%");
+                    $("#windSpeed").text("Wind Speed: " + response.wind.speed + " MPH")
+
+                    var longitude = JSON.stringify(response.coord.lon);
+                    var latitude = JSON.stringify(response.coord.lat);
+                    var UVqueryURL = "http://api.openweathermap.org/data/2.5/uvi?lat=" + latitude + "&lon=" + longitude + "&appid=2521198802838b4440f00e66a7aa70a5";
+
+                    $.ajax({
+                        url: UVqueryURL,
+                        method: "GET"
+                    }).then(function (response) {
+                        console.log(response);
+
+                        var UVIndex = response.value;
+
+                        $("#UVIndex").text("UV Index: " + UVIndex);
+                    });
+
                 });
 
             });
-
-
         </script>
 
 </body>

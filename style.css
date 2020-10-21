@@ -42,8 +42,14 @@
     font-size: 30px;
 }
 
-.card-body {
-    padding-top: 7.75rem;
-    padding-bottom: 7.75rem;
+.card .card-body {
+    padding-bottom: 2rem;
 }
 
+.weather-card {
+    font-size: 20px;
+}
+
+.card-title {
+    padding-bottom:20px;
+}
