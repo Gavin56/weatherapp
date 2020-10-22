@@ -69,11 +69,20 @@
     margin-bottom: 50px;
 }
 
+#UVIndexDiv {
+    float:left;
+    text-align: left;
+}
+
 .UVmild {
     background-color: green;
     color:white;
     text-align: center;
     width:60px;
+    border: solid 1px black;
+    border-radius: 5px;
+    float:right;
+    margin-left: 10px;
 }
 
 .UVmoderate {
@@ -81,6 +90,10 @@
     color:black;
     text-align: center;
     width:60px;
+    border: solid 1px black;
+    border-radius: 5px;
+    float:right;
+    margin-left: 10px;
 }
 
 .UVsevere {
@@ -88,6 +101,10 @@
     color:black;
     text-align: center;
     width:60px;
+    border: solid 1px black;
+    border-radius: 5px;
+    float:right;
+    margin-left: 10px;
 }
 
 .UVdangerous {
@@ -95,4 +112,8 @@
     color:white;
     text-align: center;
     width:60px;
+    border: solid 1px black;
+    border-radius: 5px;
+    float:right;
+    margin-left: 10px;
 }
