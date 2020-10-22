@@ -61,7 +61,7 @@
                             <p class="weather-card" id="temperature">Temperature:</p>
                             <p class="weather-card" id="humidity">Humidity:</p>
                             <p class="weather-card" id="windSpeed">Wind Speed:</p>
-                            <p class="weather-card" id="UVIndex">UV Index:</p>
+                            <p class="weather-card" id="UVIndexDiv">UV Index:</p>
                         </div>
                     </div>
                 </div>
@@ -69,33 +69,8 @@
 
             <div class="container">
                 <div class="row" id="fiveDayForecast">
-                    <h2>5-Day Forecast:</h2>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus commodo ullamcorper pretium. Sed
-                    sed
-                    fringilla erat. Morbi lobortis congue orci sed lacinia. Sed vestibulum urna sed sodales varius.
-                    Lorem
-                    ipsum dolor sit amet, consectetur adipiscing elit. Aliquam rutrum elementum leo, eget ultrices diam
-                    hendrerit ut. Interdum et malesuada fames ac ante ipsum primis in faucibus. Pellentesque vehicula
-                    ornare
-                    ipsum elementum tempor. In sit amet arcu ac augue vehicula consequat. Sed placerat lectus id
-                    hendrerit
-                    congue.
-
-                    Proin sit amet enim elit. Nam commodo, sem in pretium faucibus, justo felis porta ante, quis
-                    vehicula
-                    sapien purus in magna. Sed blandit porttitor leo, eget consectetur nisi lobortis vel. Fusce
-                    ultricies
-                    magna ac lorem bibendum, nec tempus arcu dapibus. In sit amet maximus risus, eleifend interdum
-                    felis. Ut
-                    ut consequat enim. Donec laoreet commodo consequat.
-
-                    Duis porttitor justo eget bibendum elementum. Praesent mattis cursus facilisis. Nullam eleifend est
-                    quis
-                    eros porttitor, at tempor ipsum elementum. Praesent rhoncus enim eget suscipit posuere. Cras
-                    tincidunt
-                    enim vitae ligula eleifend venenatis. Sed euismod lobortis elit at vehicula. Etiam nec justo a
-                    ligula
-                    luctus ullamcorper vel vitae lorem. Morbi ac nisi vel nisi ullamcorper venenatis at nec massa.
+                    <h2 id="fiveDayTitle">5-Day Forecast:</h2>
+                    <div id="fiveDaySection"></div>
                 </div>
             </div>
         </div>
@@ -103,14 +78,14 @@
         <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>.
         <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
 
-        <script>      
-            $("#searchButton").on("click", function (event){
+        <script>
+            $("#searchButton").on("click", function (event) {
                 event.preventDefault;
                 var city = $(this).siblings("input").val();
-                var queryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=2521198802838b4440f00e66a7aa70a5";
+                var todayQueryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=2521198802838b4440f00e66a7aa70a5";
 
                 $.ajax({
-                    url: queryURL,
+                    url: todayQueryURL,
                     method: "GET"
                 }).then(function (response) {
                     console.log(response);
@@ -119,12 +94,12 @@
                     var tempKelvin = response.main.temp;
                     var tempFahrenheit = ((tempKelvin - 273.15) * 9 / 5 + 32).toFixed(2);
                     var date = moment().format("l");
-                    
 
+                    // $("#weather_image").attr("src", "http://openweathermap.org/img/w/" + response.weather[0].icon + ".png");
                     $("#cityName").text("City: " + response.name + " " + date);
-                    $("#temperature").text("Temperature: " + tempFahrenheit + "°F")
+                    $("#temperature").text("Temperature: " + tempFahrenheit + "°F");
                     $("#humidity").text("Humidity: " + response.main.humidity + "%");
-                    $("#windSpeed").text("Wind Speed: " + response.wind.speed + " MPH")
+                    $("#windSpeed").text("Wind Speed: " + response.wind.speed + " MPH");
 
                     var longitude = JSON.stringify(response.coord.lon);
                     var latitude = JSON.stringify(response.coord.lat);
@@ -137,12 +112,53 @@
                         console.log(response);
 
                         var UVIndex = response.value;
+                        $("#UVIndexDiv").text("UV Index: ");
+                        
+                        //I need to make a div inside the title div and give it the UV value and the respective class attribute so it doesnt take up the screen
+                        var UVbutton = $("<button>");
+                        UVbutton.text(UVIndex);
+                        $("#UVIndexDiv").append(UVbutton);
 
-                        $("#UVIndex").text("UV Index: " + UVIndex);
+                        if (UVIndex < 3) {
+                            $(UVbutton).removeClass("UVmoderate");
+                            $(UVbutton).removeClass("UVsevere");
+                            $(UVbutton).removeClass("UVdangerous");
+                            $(UVbutton).addClass("UVmild");
+                        } else if (UVIndex < 6) {
+                            $(UVbutton).removeClass("UVmild");
+                            $(UVbutton).removeClass("UVsevere");
+                            $(UVbutton).removeClass("UVdangerous");
+                            $(UVbutton).addClass("UVmoderate");
+                        } else if (UVIndex < 10) {
+                            $(UVbutton).removeClass("UVmoderate");
+                            $(UVbutton).removeClass("UVmild");
+                            $(UVbutton).removeClass("UVdangerous");
+                            $(UVbutton).addClass("UVsevere");
+                        } else {
+                            $(UVbutton).removeClass("UVmoderate");
+                            $(UVbutton).removeClass("UVsevere");
+                            $(UVbutton).removeClass("UVmild");
+                            $(UVbutton).addClass("UVdangerous");
+                        };
                     });
-
                 });
 
+                var fiveDayQueryURL = "http://api.openweathermap.org/data/2.5/forecast?q=" + city + "&appid=2521198802838b4440f00e66a7aa70a5";
+
+                $.ajax({
+                    url: fiveDayQueryURL,
+                    method: "GET"
+                }).then(function (response) {
+                    console.log(response);
+                    $("#fiveDaySection").empty();
+
+                    for (var i = 0; i < 5; i++) {
+                        var forecastDiv = $("<div>");
+                        forecastDiv.addClass("forecastDiv");
+                        $("#fiveDaySection").append(forecastDiv);
+                    }
+
+                });
             });
         </script>
 

@@ -53,3 +53,46 @@
 .card-title {
     padding-bottom:20px;
 }
+
+.forecastDiv {
+    width: 180px;
+    height: 240px;
+    background-color: rgb(23, 85, 219);
+    border-radius: 10px;
+    float:left;
+    margin-right: 30px;
+    margin-bottom: 30px;
+}
+
+#fiveDayTitle {
+    margin-right:73%;
+    margin-bottom: 50px;
+}
+
+.UVmild {
+    background-color: green;
+    color:white;
+    text-align: center;
+    width:60px;
+}
+
+.UVmoderate {
+    background-color: yellow;
+    color:black;
+    text-align: center;
+    width:60px;
+}
+
+.UVsevere {
+    background-color: orange;
+    color:black;
+    text-align: center;
+    width:60px;
+}
+
+.UVdangerous {
+    background-color: red;
+    color:white;
+    text-align: center;
+    width:60px;
+}
