@@ -56,7 +56,7 @@
 
 .forecastDiv {
     width: 180px;
-    height: 240px;
+    height: 180px;
     background-color: rgb(23, 85, 219);
     border-radius: 10px;
     float:left;
@@ -78,7 +78,7 @@
 }
 
 .UVmild {
-    background-color: green;
+    background-color: rgb(0, 170, 0);
     color:white;
     text-align: center;
     width:60px;

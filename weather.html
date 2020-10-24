@@ -110,37 +110,9 @@
                         method: "GET"
                     }).then(function (response) {
                         console.log(response);
-
-                        var UVIndex = response.value;
-                        $("#UVIndexDiv").text("UV Index: ");
                         
-                        //I need to make a div inside the title div and give it the UV value and the respective class attribute so it doesnt take up the screen
-                        var UVbutton = $("<p>");
-                        UVbutton.text(UVIndex);
-                        $("#UVIndexDiv").append(UVbutton);
-
-                        //Conditions dictating what color the UV Index should be
-                        if (UVIndex < 3) {
-                            $(UVbutton).removeClass("UVmoderate");
-                            $(UVbutton).removeClass("UVsevere");
-                            $(UVbutton).removeClass("UVdangerous");
-                            $(UVbutton).addClass("UVmild");
-                        } else if (UVIndex < 6) {
-                            $(UVbutton).removeClass("UVmild");
-                            $(UVbutton).removeClass("UVsevere");
-                            $(UVbutton).removeClass("UVdangerous");
-                            $(UVbutton).addClass("UVmoderate");
-                        } else if (UVIndex < 10) {
-                            $(UVbutton).removeClass("UVmoderate");
-                            $(UVbutton).removeClass("UVmild");
-                            $(UVbutton).removeClass("UVdangerous");
-                            $(UVbutton).addClass("UVsevere");
-                        } else {
-                            $(UVbutton).removeClass("UVmoderate");
-                            $(UVbutton).removeClass("UVsevere");
-                            $(UVbutton).removeClass("UVmild");
-                            $(UVbutton).addClass("UVdangerous");
-                        };
+                        //Passing the ajax response to the getUVIndex call
+                        getUVIndex(response);
                     });
                 });
 
@@ -222,6 +194,40 @@
 
                 });
             });
+
+            function getUVIndex (response) {
+                
+                var UVIndex = response.value;
+                        $("#UVIndexDiv").text("UV Index: ");
+                        
+                        //I need to make a div inside the title div and give it the UV value and the respective class attribute so it doesnt take up the screen
+                        var UVbutton = $("<p>");
+                        UVbutton.text(UVIndex);
+                        $("#UVIndexDiv").append(UVbutton);
+
+                        //Conditions dictating what color the UV Index should be
+                        if (UVIndex < 3) {
+                            $(UVbutton).removeClass("UVmoderate");
+                            $(UVbutton).removeClass("UVsevere");
+                            $(UVbutton).removeClass("UVdangerous");
+                            $(UVbutton).addClass("UVmild");
+                        } else if (UVIndex < 6) {
+                            $(UVbutton).removeClass("UVmild");
+                            $(UVbutton).removeClass("UVsevere");
+                            $(UVbutton).removeClass("UVdangerous");
+                            $(UVbutton).addClass("UVmoderate");
+                        } else if (UVIndex < 10) {
+                            $(UVbutton).removeClass("UVmoderate");
+                            $(UVbutton).removeClass("UVmild");
+                            $(UVbutton).removeClass("UVdangerous");
+                            $(UVbutton).addClass("UVsevere");
+                        } else {
+                            $(UVbutton).removeClass("UVmoderate");
+                            $(UVbutton).removeClass("UVsevere");
+                            $(UVbutton).removeClass("UVmild");
+                            $(UVbutton).addClass("UVdangerous");
+                        };
+            }
         </script>
 
 </body>
