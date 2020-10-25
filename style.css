@@ -26,6 +26,7 @@
 #previousSearchResults {
     margin-top: 20px;
     margin-bottom: 20px;
+    margin-left: 72px;
 }
 
 #searchCity {
@@ -54,7 +55,7 @@
     padding-bottom:20px;
 }
 
-.forecastDiv {
+.fiveDayForecastDiv {
     width: 180px;
     height: 180px;
     background-color: rgb(23, 85, 219);
@@ -100,7 +101,7 @@
 }
 
 .UVsevere {
-    background-color: orange;
+    background-color: rgb(255, 153, 0);
     color:black;
     text-align: center;
     width:60px;

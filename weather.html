@@ -27,21 +27,12 @@
                 <button type="button" class="btn btn-success" id="searchButton">Search</button>
 
                 <div class="row">
-                    <div class="col" id="previousSearchResults">
+                    <div class="col-md-8" id="previousSearchResults">
 
                         <div class="list-group" id="list-tab" role="tablist">
 
-                            <a class="list-group-item list-group-item-action" id="list-home-list" data-toggle="list"
-                                href="#list-home" role="tab" aria-controls="home">Home</a>
+                            <button class="list-group-item list-group-item-action" id="list-home-list" data-toggle="list"></button>
 
-                            <a class="list-group-item list-group-item-action" id="list-profile-list" data-toggle="list"
-                                href="#list-profile" role="tab" aria-controls="profile">Profile</a>
-
-                            <a class="list-group-item list-group-item-action" id="list-messages-list" data-toggle="list"
-                                href="#list-messages" role="tab" aria-controls="messages">Messages</a>
-
-                            <a class="list-group-item list-group-item-action" id="list-settings-list" data-toggle="list"
-                                href="#list-settings" role="tab" aria-controls="settings">Settings</a>
                         </div>
 
                     </div>
@@ -79,9 +70,26 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
 
         <script>
+
+            var historyArray = [];
+            function renderHistory() {
+                $(".list-group").empty();
+
+                for (var i=0; i<historyArray.length; i++) {
+                    var recentButton = $("<button class='list-group-item'>").text(historyArray[i]);
+                    $(".list-group").prepend(recentButton);
+                };
+
+                $("input").val("");
+            };
+
             $("#searchButton").on("click", function (event) {
                 event.preventDefault;
                 var city = $(this).siblings("input").val();
+
+                historyArray.push(city);
+                renderHistory();
+
                 var todayQueryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=2521198802838b4440f00e66a7aa70a5";
 
                 $.ajax({
@@ -112,6 +120,10 @@
                 }).then(function (response) {
                     getFiveDayForecast(response);
                 });
+            });
+
+            $(document).on("click", ".list-group-item", function() {
+                var searchItem = $(this).text();
             });
 
             function getUVIndex(response) {
@@ -163,6 +175,7 @@
             }
 
             function getFiveDayForecast(response) {
+
                 //Prevents the boxes from stacking on top of each other. Renders in a completely new row every time.
                 $("#fiveDaySection").empty();
 
@@ -175,7 +188,7 @@
                 for (var i = 0; i < 5; i++) {
                     //createForeCastDiv function
                     var forecastDiv = $("<div>");
-                    forecastDiv.addClass("forecastDiv");
+                    forecastDiv.addClass("fiveDayForecastDiv");
                     $("#fiveDaySection").append(forecastDiv);
 
 
@@ -232,6 +245,7 @@
                 }
             };
 
+            renderHistory();
 
         </script>
 
