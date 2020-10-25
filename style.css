@@ -1,3 +1,8 @@
+html {
+    height: 102%;
+    margin-bottom: 0.01em;
+  }
+
 .container {
     width: 100%;
     margin: auto;
@@ -12,7 +17,7 @@
 }
 
 #searchSection {
-    background-color: rgb(216, 216, 216);
+    background-image: linear-gradient(to bottom, rgb(216, 216, 216), white);
     padding-bottom: 20%;
 }
 

@@ -31,7 +31,8 @@
 
                         <div class="list-group" id="list-tab" role="tablist">
 
-                            <button class="list-group-item list-group-item-action" id="list-home-list" data-toggle="list"></button>
+                            <button class="list-group-item list-group-item-action" id="list-home-list"
+                                data-toggle="list"></button>
 
                         </div>
 
@@ -70,60 +71,36 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
 
         <script>
+            
+            //Retrieves buttons from local storage or creates an empty array.
+            var historyArray = JSON.parse(localStorage.getItem("searchHistory")) || [];
+            
+            //Takes the history array's last value and stores it in a variable, then passes it to the weatherCall function to
+            //generate weather based on the user's last search when opening the browser.
+            var lastSearched = (historyArray[historyArray.length - 1]);
+            weatherCall(lastSearched);
+            
 
-            var historyArray = [];
-            function renderHistory() {
-                $(".list-group").empty();
-
-                for (var i=0; i<historyArray.length; i++) {
-                    var recentButton = $("<button class='list-group-item'>").text(historyArray[i]);
-                    $(".list-group").prepend(recentButton);
-                };
-
-                $("input").val("");
-            };
-
+            //Main search button
             $("#searchButton").on("click", function (event) {
                 event.preventDefault;
                 var city = $(this).siblings("input").val();
 
-                historyArray.push(city);
-                renderHistory();
+                //Pushes value of city into the history array as long as it has a value
+                if (city==="") {
+                    return;
+                } else {
+                    historyArray.push(city);
+                    renderHistory();
+                }
 
-                var todayQueryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=2521198802838b4440f00e66a7aa70a5";
-
-                $.ajax({
-                    url: todayQueryURL,
-                    method: "GET"
-                }).then(function (response) {
-                    getTodaysWeather(response);
-
-                    var longitude = JSON.stringify(response.coord.lon);
-                    var latitude = JSON.stringify(response.coord.lat);
-                    var UVqueryURL = "http://api.openweathermap.org/data/2.5/uvi?lat=" + latitude + "&lon=" + longitude + "&appid=2521198802838b4440f00e66a7aa70a5";
-
-                    $.ajax({
-                        url: UVqueryURL,
-                        method: "GET"
-                    }).then(function (response) {
-                        //Passing the ajax response to the getUVIndex call
-                        getUVIndex(response);
-                    });
-                });
-
-                //5 Day Forecast call and handling
-                var fiveDayQueryURL = "http://api.openweathermap.org/data/2.5/forecast?q=" + city + "&appid=2521198802838b4440f00e66a7aa70a5";
-
-                $.ajax({
-                    url: fiveDayQueryURL,
-                    method: "GET"
-                }).then(function (response) {
-                    getFiveDayForecast(response);
-                });
+                weatherCall(city);
             });
 
-            $(document).on("click", ".list-group-item", function() {
-                var searchItem = $(this).text();
+            //Dynamically generated history buttons
+            $(document).on("click", ".list-group-item", function () {
+                var city = $(this).text();
+                weatherCall(city);
             });
 
             function getUVIndex(response) {
@@ -243,6 +220,54 @@
 
                     index += 8;
                 }
+            };
+
+            function weatherCall(city) {
+                var todayQueryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=2521198802838b4440f00e66a7aa70a5";
+
+                $.ajax({
+                    url: todayQueryURL,
+                    method: "GET"
+                }).then(function (response) {
+                    getTodaysWeather(response);
+
+                    var longitude = JSON.stringify(response.coord.lon);
+                    var latitude = JSON.stringify(response.coord.lat);
+                    var UVqueryURL = "http://api.openweathermap.org/data/2.5/uvi?lat=" + latitude + "&lon=" + longitude + "&appid=2521198802838b4440f00e66a7aa70a5";
+
+                    $.ajax({
+                        url: UVqueryURL,
+                        method: "GET"
+                    }).then(function (response) {
+                        //Passing the ajax response to the getUVIndex call
+                        getUVIndex(response);
+                    });
+                });
+
+                //5 Day Forecast call and handling
+                var fiveDayQueryURL = "http://api.openweathermap.org/data/2.5/forecast?q=" + city + "&appid=2521198802838b4440f00e66a7aa70a5";
+
+                $.ajax({
+                    url: fiveDayQueryURL,
+                    method: "GET"
+                }).then(function (response) {
+                    getFiveDayForecast(response);
+                });
+            }
+
+            function renderHistory() {
+                $(".list-group").empty();
+
+                    for (var i = 0; i < historyArray.length; i++) {
+                        var recentButton = $("<button class='list-group-item'>").text(historyArray[i]);
+                        $(".list-group").prepend(recentButton);
+                    };
+
+                //Stores the generated button in local storage.
+                localStorage.setItem("searchHistory", JSON.stringify(historyArray));
+
+                //Clears input box
+                $("input").val("");
             };
 
             renderHistory();
