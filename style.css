@@ -1,3 +1,5 @@
+/* This code was implemented to prevent an issue where every character of text typed into the input field would cause the side scroll bar to pop up 
+and shift the screen */
 html {
     height: 102%;
     margin-bottom: 0.01em;
@@ -18,7 +20,6 @@ html {
 
 #searchSection {
     background-image: linear-gradient(to bottom, rgb(216, 216, 216), white);
-    padding-bottom: 20%;
 }
 
 #searchBar {
@@ -34,10 +35,29 @@ html {
     margin-left: 72px;
 }
 
-#searchCity {
+#searchForACity {
     padding-top: 10px;
     font-size: 2rem;
     text-align: center;
+}
+
+#searchHistory {
+    text-align: center;
+    margin-top: 30px;
+    margin-left: 10px;
+}
+
+.list-group-item {
+    margin-top: 5px;
+    margin-right: 20px;
+}
+
+#clearButton {
+    margin-top: 30px;
+    border-radius: 5px;
+    text-align: center;
+    margin-left: 40px;
+    color: white;
 }
 
 #fiveDayForecast {
@@ -50,14 +70,15 @@ html {
 
 .card .card-body {
     padding-bottom: 1.5rem;
+    background-image: linear-gradient(to top left, rgb(180, 232, 255), white);
 }
 
-.weather-card {
-    font-size: 20px;
-}
-
-.card-title {
+.cardTitle {
     padding-bottom:20px;
+}
+
+.weatherCard {
+    font-size: 20px;
 }
 
 .fiveDayForecastDiv {
