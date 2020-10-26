@@ -1,20 +1,20 @@
 $(document).ready(function () {
 
-    //Retrieves buttons from local storage or creates an empty array.
+    //Received help from my classmate Amanda with this.
     var historyArray = JSON.parse(localStorage.getItem("searchHistory")) || [];
-
-    //Takes the history array's last value and stores it in a variable, then passes it to the weatherCall function to
-    //generate weather based on the user's last search when opening the browser.
     var lastSearched = (historyArray[historyArray.length - 1]);
     weatherCall(lastSearched);
 
+    //We need to call this so the search history buttons remain on the screen whenever we refresh or reopen the browser.
+    renderHistory();
 
-    //Main search button
+
     $("#searchButton").on("click", function (event) {
-        event.preventDefault;
+        event.preventDefault();
+
         var city = $(this).siblings("input").val();
 
-        //Pushes value of city into the history array as long as it has a value
+        //Received help from my classmate Amanda with this.
         if (city === "") {
             return;
         } else {
@@ -23,20 +23,20 @@ $(document).ready(function () {
             renderHistory();
         }
 
-        // var clearButton = $("<button id='clearButton'>");
-        // clearButton.text("Clear History");
-        // $(".list-group").append(clearButton);
-
         weatherCall(city);
-    });
+    }); //End of searchButton onclick//
+
 
     $(document).on("click", "#clearButton", clearHistory);
 
-    //Dynamically generated history buttons
+
+    //Received help from my classmate Amanda with this. Any clicked element with class "list-group-item" will perform this function.
+    //This function sets the text of the clicked button to the city variable and then passes it to the weatherCall function.
     $(document).on("click", ".list-group-item", function () {
         var city = $(this).text();
         weatherCall(city);
-    });
+    }); //End of clearButton onclick//
+
 
     function getUVIndex(response) {
 
@@ -48,7 +48,7 @@ $(document).ready(function () {
         UVbutton.text(UVIndex);
         $("#UVIndexDiv").append(UVbutton);
 
-        //Conditions dictating what color the UV Index should be
+        //Conditions dictating what color the UV Index should be. Also removes irrelevant classes.
         if (UVIndex < 3) {
             $(UVbutton).removeClass("UVmoderate");
             $(UVbutton).removeClass("UVsevere");
@@ -78,7 +78,6 @@ $(document).ready(function () {
         var tempFahrenheit = ((tempKelvin - 273.15) * 9 / 5 + 32).toFixed(2);
         var date = moment().format("l");
 
-        // $("#weather_image").attr("src", "http://openweathermap.org/img/w/" + response.weather[0].icon + ".png");
         $("#cityName").text("Today's Forecast: " + response.name + " " + date);
         $("#temperature").text("Temperature: " + tempFahrenheit + "°F");
         $("#humidity").text("Humidity: " + response.main.humidity + "%");
@@ -95,68 +94,51 @@ $(document).ready(function () {
         //dayCount allows us to add a day to the current date, increasing by 1 with each iteration of the loop, to get the dates for the next 5 days.
         var index = 0;
         var dayCount = 1;
-        var weatherIcon = "";
 
         //Loop for 5 day forecast
         for (var i = 0; i < 5; i++) {
-            //createForeCastDiv function
+
             var forecastDiv = $("<div>");
             forecastDiv.addClass("fiveDayForecastDiv");
             $("#fiveDaySection").append(forecastDiv);
 
-
-            //createNewDate function
-            //Moment adds a day to the current date and returns the value.
+            //Dynamically retrieving subsequent days in moment.js and appending desired text to the dateHeader.
             var nextDate = moment().add(dayCount, "day");
-
-            //Turn the value that moment.js gives us into a string so we can use substring on it.
             nextDate = String(nextDate);
-
-            //Use substring on the nextDate string to grab the relevant data from it.
             var nextDateSubString = nextDate.substring(0, 15);
-
-            //Create a header to fill with the date
             var dateHeader = $("<h5>");
 
-            //Append the new h5 tag to the forecast div and update the text within it with the subtring.
             forecastDiv.append(dateHeader);
             dateHeader.text(nextDateSubString);
 
-            //Add 1 to day count to return the subsequent date.
-            dayCount++;
-
-            //createIcon
+            //Dynamically create a weather icon for each day.
             var weatherIconURL = "http://openweathermap.org/img/w/" + response.list[index].weather[0].icon + ".png";
-
             var weatherIconImage = $("<img>");
-            weatherIconImage.attr("src", weatherIconURL);
 
+            weatherIconImage.attr("src", weatherIconURL);
             forecastDiv.append(weatherIconImage);
 
-
-            //createDailyTemp
-            //Get the temp from the JSON object and convert it to Fahrenheit.
+            //Dynamically display temperature for each day (converted to Fahrenheit).
             var tempKelvin = response.list[index].main.temp;
             var tempFahrenheit = ((tempKelvin - 273.15) * 9 / 5 + 32).toFixed(2);
-
-            //Create a p tag and fill it with the text and temp.
             var tempP = $("<p>");
 
-            //Append the new p tag to the forecast div and update the text within it with the temperature.
             forecastDiv.append(tempP);
             tempP.text("Temp: " + tempFahrenheit + " °F");
 
-            //Create a p tag and fill it with the text and temp.
+            //Dynamically display humidity percentage for each day.
             var humidityP = $("<p>");
 
-            //Append the new p tag to the forecast div and update the text within it with the temperature.
             forecastDiv.append(humidityP);
             humidityP.text("Humidity: " + response.list[index].main.humidity + "%");
-
+            
+            //dayCount increments the moment.js function on line 106 while index increments each response.list item we retrieve by 1 day.
+            dayCount++;
             index += 8;
         }
     };
 
+    //Ajax calls
     function weatherCall(city) {
         var todayQueryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=2521198802838b4440f00e66a7aa70a5";
 
@@ -169,6 +151,7 @@ $(document).ready(function () {
             var longitude = JSON.stringify(response.coord.lon);
             var latitude = JSON.stringify(response.coord.lat);
 
+            //Generates weather icon image.
             $("#weatherIcon").attr("src", "http://openweathermap.org/img/w/" + response.weather[0].icon + ".png");
 
             var UVqueryURL = "http://api.openweathermap.org/data/2.5/uvi?lat=" + latitude + "&lon=" + longitude + "&appid=2521198802838b4440f00e66a7aa70a5";
@@ -193,6 +176,8 @@ $(document).ready(function () {
         });
     }
 
+    //Received help from my classmate Amanda with this. This empties the div to prevent duplication, and runs through the search history array to 
+    //generate buttons labeled with the text found inside the array.
     function renderHistory() {
         $(".list-group").empty();
 
@@ -210,6 +195,4 @@ $(document).ready(function () {
         localStorage.clear();
         historyArray = [];
     }
-
-    renderHistory();
 })
