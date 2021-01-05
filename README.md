@@ -4,7 +4,7 @@ This application makes two ajax calls to the OpenWeatherMap API and uses its JSO
 <br>
 <br>
 ## Link to Deployed Application
-https://gavin56.github.io/weatherman/
+https://gavin56.github.io/weatherapp/
 <br>
 <br>
 ## Preview Image
